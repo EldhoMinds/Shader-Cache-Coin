@@ -264,15 +264,3 @@ This project is for **educational and research purposes only**. The author is no
 
 ### Star ⭐ this repo if you're mining Aluminum!
 
-```
-
-## How to Use:
-
-1. **Save as `README.md`** in your GitHub repository root
-2. **Replace `yourusername`** with your actual GitHub username
-3. **Add Discord/Twitter links** if you have them
-4. **Commit and push** to GitHub
-
-The image will automatically load from your GitHub attachment URL.
-
-Want me to add anything else? (Installation troubleshooting, GPU optimization guide, mining pool setup, etc.)
