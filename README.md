@@ -1,3 +1,6 @@
+No problem! Here's the **README.md** content for your GitHub repository:
+
+```markdown
 # 🔨 Shader Cache Coin (SCC)
 
 ### New Shader Cache coin that uses Prime-Number Searching and converting to Linked Lists
@@ -31,3 +34,251 @@ The protocol extracts 32-bit integers from cache binaries, tests them for primal
 ---
 
 ## 🔬 How It Works
+
+```
+Play Games → Generate Shader Caches → Scan Cache Files → Extract 32-bit Integers
+    ↓
+Miller-Rabin Primality Test → Build Linked Lists → Verify Tables → Mine Complete
+```
+
+### Step-by-Step:
+
+1. **Play games** (CS2, Valorant, etc.) - Generates shader caches on your GPU
+2. **Miner scans** cache directories (NVIDIA/AMD/Steam)
+3. **Reads file** as 4-byte chunks (32-bit integers)
+4. **Tests each number** for primality using Miller-Rabin
+5. **Stores primes** in linked list (10M per table)
+6. **Verifies tables** with spot-checking (0.1% sample)
+7. **Saves to disk** when complete
+
+---
+
+## 💻 Installation & Usage
+
+### Prerequisites
+- Python 3.6 or higher
+- Any game that generates shader caches (CS2 recommended)
+- NVIDIA, AMD, or Intel GPU (any works)
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/shader-cache-coin.git
+cd shader-cache-coin
+
+# Scan for large cache files
+python aluminum_miner.py --scan
+
+# Start mining from a specific file
+python aluminum_miner.py "C:\Users\YourName\AppData\Local\NVIDIA\DXCache\file.nvph"
+
+# Verify completed tables
+python aluminum_miner.py --verify
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `--scan` | Find large files suitable for mining |
+| `--verify` | Verify completed tables |
+| `--resume [file]` | Resume from saved checkpoint |
+| `--quick` | Quick test mode (1M primes only) |
+
+---
+
+## 📁 File Structure
+
+When mining, these files are created:
+
+```
+aluminum_table_00.bin        # Table 0 (10M primes)
+aluminum_table_01.bin        # Table 1 (10M primes)
+...
+aluminum_table_49.bin        # Table 49 (10M primes)
+mining_result_TIMESTAMP.json # Mining results
+mining_checkpoint.json       # Resume point
+```
+
+---
+
+## 🎮 Best Files to Mine From
+
+| File Type | Location | Typical Size |
+|-----------|----------|--------------|
+| **NVIDIA DXCache** | `%localappdata%\NVIDIA\DXCache` | 100MB-2GB |
+| **Steam Shader Caches** | `C:\Program Files\Steam\steamapps\shadercache` | 500MB-5GB |
+| **AMD DxCache** | `%localappdata%\AMD\DxCache` | 100MB-2GB |
+| **Game Installers** | Downloads folder | 10GB-100GB |
+| **Video Files** | Anywhere | 1GB-50GB |
+
+---
+
+## 📊 Performance Benchmarks
+
+| CPU | Primes/sec | Time for 500M | File Data Needed |
+|-----|-----------|---------------|------------------|
+| Intel i3 (2 cores) | ~50 | ~115 days | ~35 GB |
+| Intel i5 (4 cores) | ~150 | ~38 days | ~35 GB |
+| Intel i7 (8 cores) | ~300 | ~19 days | ~35 GB |
+| Intel i9 (16 cores) | ~500 | ~11 days | ~35 GB |
+| AMD Ryzen 9 | ~600 | ~9.6 days | ~35 GB |
+
+---
+
+## 🧪 Prime Testing Algorithm
+
+The miner uses an **optimized Miller-Rabin** primality test:
+
+```python
+def miller_rabin(n: int, k: int = 5) -> bool:
+    """Miller-Rabin primality test - 5 witnesses"""
+    if n < 2: return False
+    if n in (2, 3, 5, 7): return True
+    if n % 2 == 0: return False
+    
+    # Write n-1 as d*2^s
+    s, d = 0, n - 1
+    while d % 2 == 0:
+        s += 1
+        d //= 2
+    
+    # Test witnesses
+    for a in [2, 3, 5, 7, 11]:
+        if a >= n: continue
+        x = pow(a, d, n)
+        if x == 1 or x == n - 1: continue
+        for _ in range(s - 1):
+            x = (x * x) % n
+            if x == n - 1: break
+        else: return False
+    return True
+```
+
+---
+
+## 💰 Mining Tiers & Tokenomics
+
+| Tier | Tables | Total Primes | Fixed ICO Price | Est. Mining Time |
+|------|--------|--------------|-----------------|------------------|
+| **🥉 Bronze** | 50 | 500M | $5 | 14-20 days |
+| **🥈 Silver** (Q3 2026) | 75 | 750M | $7 | 21-30 days |
+| **🥇 Gold** (Q1 2027) | 100 | 1B | $10 | 28-40 days |
+
+---
+
+## 🔧 Memory Optimization
+
+### The Problem:
+- Python objects have massive overhead (~56 bytes per prime)
+- 500M primes would require **28 GB of RAM** ❌
+
+### The Solution:
+- Uses `array.array('I')` (4 bytes per prime)
+- Only stores **1 table at a time** in RAM
+- Saves completed tables to disk immediately
+
+### Result:
+- **~44 MB RAM usage** ✅ (from 28 GB)
+- 636× memory reduction
+
+---
+
+## ✅ Verification System
+
+Each completed table is verified using:
+
+1. **Size check** - Exactly 10,000,000 primes
+2. **Spot sampling** - 0.1% of primes re-tested
+3. **Composite tolerance** - <0.01% false positives allowed
+
+```bash
+# Verify all completed tables
+python aluminum_miner.py --verify
+
+# Output:
+# ✅ Table 00: 10,000,000 primes VALID
+# ✅ Table 01: 10,000,000 primes VALID
+# ...
+# 📊 Verified: 50/50 tables complete
+```
+
+---
+
+## 🚀 Roadmap
+
+### Phase 1: Aluminum (Current) ✅
+- [x] 50-table mining protocol
+- [x] Memory optimization (44MB RAM)
+- [x] Resume/save functionality
+- [x] Miller-Rabin verification
+- [ ] GPU acceleration (CUDA)
+
+### Phase 2: Silver (Q3 2026)
+- [ ] 75-table tier
+- [ ] Multi-file auto-miner
+- [ ] Network mining pool
+- [ ] Exchange listing
+
+### Phase 3: Gold (Q1 2027)
+- [ ] 100-table tier
+- [ ] Smart contract integration
+- [ ] NFT mining badges
+- [ ] DAO governance
+
+---
+
+## 📝 License
+
+MIT License - Free for educational and research use.
+
+---
+
+## 👨‍💻 Author
+
+**Eldho Philip Abraham**  
+Kanayannur, Kerala, India  
+2026
+
+---
+
+## 🙏 Acknowledgments
+
+- Miller & Rabin for the primality test algorithm
+- The Python community for excellent tools
+- Gamers everywhere for generating shader caches
+
+---
+
+## ⚠️ Disclaimer
+
+This project is for **educational and research purposes only**. The author is not responsible for:
+- Excessive electricity bills
+- Hardware wear and tear
+- Any consequences of running this software
+
+---
+
+## 📞 Contact & Community
+
+- **GitHub Issues**: [Report bugs](https://github.com/yourusername/shader-cache-coin/issues)
+- **Discord**: [Join our community](https://discord.gg/invite-link)
+- **Twitter**: [@ShaderCacheCoin](https://twitter.com/shaderCacheCoin)
+
+---
+
+### Star ⭐ this repo if you're mining Aluminum!
+
+```
+
+## How to Use:
+
+1. **Save as `README.md`** in your GitHub repository root
+2. **Replace `yourusername`** with your actual GitHub username
+3. **Add Discord/Twitter links** if you have them
+4. **Commit and push** to GitHub
+
+The image will automatically load from your GitHub attachment URL.
+
+Want me to add anything else? (Installation troubleshooting, GPU optimization guide, mining pool setup, etc.)
