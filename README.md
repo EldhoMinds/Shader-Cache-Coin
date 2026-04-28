@@ -1,6 +1,4 @@
-No problem! Here's the **README.md** content for your GitHub repository:
 
-```markdown
 # 🔨 Shader Cache Coin (SCC)
 
 ### New Shader Cache coin that uses Prime-Number Searching and converting to Linked Lists
