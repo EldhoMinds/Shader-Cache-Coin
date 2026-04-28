@@ -260,11 +260,7 @@ This project is for **educational and research purposes only**. The author is no
 
 ## 📞 Contact & Community
 
-- **GitHub Issues**: [Report bugs](https://github.com/yourusername/shader-cache-coin/issues)
-- **Discord**: [Join our community](https://discord.gg/invite-link)
-- **Twitter**: [@ShaderCacheCoin](https://twitter.com/shaderCacheCoin)
-
----
+**EMAIL** eldhogt40@gmail.com
 
 ### Star ⭐ this repo if you're mining Aluminum!
 
